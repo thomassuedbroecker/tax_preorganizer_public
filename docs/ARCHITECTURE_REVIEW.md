@@ -14,7 +14,7 @@ _Conducted by **Bob** (IBM Bob — Claude Code architecture-reviewer mode) · 20
 
 This review was produced by **Bob**, IBM's senior software architect AI assistant
 running inside Visual Studio Code as part of the project's multi-agent IDE
-collaboration workflow (alongside GitHub Copilot, OpenAI Codex, and Claude Code).
+collaboration workflow (alongside GitHub Copilot, OpenAI Codex, Claude Code and IBM Bob).
 Bob operates in **architecture-reviewer mode**, a specialised persona that applies
 seven structured review skills to a codebase and produces findings in a
 standardised format.
