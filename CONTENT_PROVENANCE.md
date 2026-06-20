@@ -3,9 +3,9 @@
 ## Development Provenance
 
 This repository has been developed with human direction and review and with
-assistance from GitHub Copilot, OpenAI Codex, and Claude Code. The project owner
-selected requirements, reviewed changes, ran tests, and accepted the resulting
-implementation.
+assistance from GitHub Copilot, OpenAI Codex, Claude Code, and IBM Bob. The
+project owner selected requirements, reviewed changes, ran tests, and accepted
+the resulting implementation.
 
 Development prompts and interaction logs are intentionally excluded from the
 public repository. Runtime prompt templates are stored under `config/`.

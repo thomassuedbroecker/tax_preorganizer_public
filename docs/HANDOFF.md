@@ -58,6 +58,61 @@ organizing invoices for a tax advisor. **Everything runs on-machine.**
 
 ## Live update log
 
+### 2026-06-20 full architecture review (Bob / Claude Code architecture-reviewer session)
+
+Conducted a complete seven-dimension architecture review of the v0.1.0 codebase. The review
+document is saved at [`docs/ARCHITECTURE_REVIEW.md`](docs/ARCHITECTURE_REVIEW.md) and
+referenced from `ARCHITECTURE.md`.
+
+**Overall verdict:** Architecturally sound, privacy-first, well-tested for v0.1.0. Core
+pipeline pattern is clean; main risks are in the agent tier and operational hardening.
+
+Key findings by priority:
+
+- 🔴 **P1 (High) — Prompt injection:** Extracted metadata (vendor name, invoice number, notes)
+  flows directly into Ollama prompt templates via `json.dumps` with no sanitisation in
+  `ai_review.py:169` and `agent_service.py:162`. A crafted vendor name can inject arbitrary
+  instructions into the local model prompt.
+- 🔴 **P1 (High) — `_call_ollama` duplicated:** The Ollama HTTP client is independently
+  implemented in both `ai_review.py` and `agent_service.py`. Bug fixes must be applied twice.
+- 🟠 **P2 (Medium) — Sequential processing:** `orchestrator.run()` processes files one at a
+  time in a single thread. No worker pool; 500+ invoice batches will be slow.
+- 🟠 **P2 (Medium) — Python pin:** `requires-python = "==3.12.*"` will block installation on
+  3.13+ without a release.
+- 🟠 **P2 (Medium) — No file size guard:** `scanner.py` has no `max_file_bytes` check; a huge
+  PDF can OOM the extraction backend.
+- 🟠 **P2 (Medium) — Agent server unauthenticated:** The local HTTP server has no
+  shared-secret or token check.
+- 🟠 **P2 (Medium) — Results buffered in RAM:** All `DocumentResult` objects (including raw
+  extracted text) are held in memory until the run completes.
+- 🟡 **P3 (Low) — `RunOptions` mutated:** `orchestrator.run()` adds `latest_filename` /
+  `latest_unit_count` as dynamic attributes on a frozen-style dataclass.
+- 🟡 **P3 (Low) — Fake streaming:** `_stream_ndjson` buffers the full Ollama response then
+  slices it with `time.sleep(0.05)` instead of using Ollama's `"stream": true`.
+- 🟡 **P3 (Low) — IBAN in audit log verbatim:** consider last-4 redaction or opt-in.
+- 🟡 **P3 (Low) — No linter in CI:** `ruff` or `flake8` not gating PRs.
+- 🟡 **P3 (Low) — `python-docx` declared but not yet used.**
+- 🟡 **P3 (Low) — Agent port 8080 not env-configurable.**
+- 🟡 **P3 (Low) — Absolute source path written to audit log.**
+- 🟡 **P3 (Low) — `print()` used instead of `logging` in `agent_service.py`.**
+- 🟡 **P3 (Low) — No rendered PNG of the Draw.io diagram committed.**
+
+No code was changed this session. The full findings with per-finding recommendations are in
+[`docs/ARCHITECTURE_REVIEW.md`](docs/ARCHITECTURE_REVIEW.md).
+
+**Suggested next steps from review (to add to the backlog below):**
+
+- [ ] Extract `ollama_client.py` — eliminate `_call_ollama` duplication (P1, small effort).
+- [ ] Add `_sanitise_for_prompt()` helper — strip control chars and cap length before any
+  metadata enters an LLM prompt (P1, small effort).
+- [ ] Add `max_file_bytes` guard in `scan_folder` — route oversized files to manual review
+  (P2, small effort).
+- [ ] Relax `requires-python = "==3.12.*"` to `>=3.12` after 3.13 smoke-test (P2, trivial).
+- [ ] Add `ruff` step to `tests.yml` CI (P3, trivial).
+- [ ] Expose `INVOICE_SORTER_AGENT_PORT` env var (P3, trivial).
+- [ ] Remove `python-docx` from `[docx]` extra until feature is implemented (P3, trivial).
+- [ ] Commit rendered `docs/invoice_sorter_architecture.png` alongside the `.drawio` (P3, trivial).
+
 ### 2026-06-20 public-release readiness pass (Claude Code / Opus session)
 
 Final pre-publication review of this repo as the public GitHub project

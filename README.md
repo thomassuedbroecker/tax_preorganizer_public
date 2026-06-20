@@ -4,14 +4,57 @@
 [![License: BSD-2-Clause](https://img.shields.io/badge/License-BSD--2--Clause-blue.svg)](LICENSE)
 
 _Note: This project and its documentation were developed with AI assistance
-(GitHub Copilot, OpenAI Codex, and Claude Code) under human direction and review. See
+(GitHub Copilot, OpenAI Codex, Claude Code, and IBM Bob) under human direction and review. See
 [CONTENT_PROVENANCE.md](CONTENT_PROVENANCE.md) for details._
+
+## Architecture overview
+
+```
+┌─────────────────────────────────────────────────────┐
+│  Input folder  (PDFs / JPG / PNG / TIFF)            │
+└──────────────────────────┬──────────────────────────┘
+                           │ scan
+                           ▼
+┌─────────────────────────────────────────────────────┐
+│  Orchestrator  (orchestrator.py)                    │
+│  for each file:                                     │
+│    1. Extract text  ──► Docling → light → manual    │
+│    2. Extract metadata  (vendor · date · amount)    │
+│    3. Classify  ────────► rule-based + confidence   │
+│    4. Route  ──────────► category folder or review  │
+│    5. Copy / move / dry-run                         │
+└──────┬──────────────────────────────────────────────┘
+       │ results + summary
+       ▼
+┌─────────────────────────────────────────────────────┐
+│  Outputs                                            │
+│  • invoice_summary.md   (Markdown report)           │
+│  • audit_log.jsonl      (one JSON line per file)    │
+│  • performance_log.json (timing + token metrics)    │
+│  • Sorted_Invoices/<Category>/  (copied files)      │
+└─────────────────────────────────────────────────────┘
+       │ optional — local Ollama only, no upload
+       ▼
+┌─────────────────────────────────────────────────────┐
+│  Local AI layer  (127.0.0.1 only)                   │
+│  • --ai-review  post-sort Markdown review           │
+│  • Agent REST service  advice / chat / exec report  │
+└─────────────────────────────────────────────────────┘
+```
+
+Both the CLI (`invoice-sorter`) and the PySide6 desktop GUI (`invoice-sorter-gui`)
+call the same `orchestrator.run(RunOptions)` — the engine is UI-agnostic.
+The AI layer is entirely optional; the deterministic pipeline never calls an LLM.
+
+For full system design, data flow, and module responsibilities see
+[ARCHITECTURE.md](ARCHITECTURE.md) · [docs/ARCHITECTURE_REVIEW.md](docs/ARCHITECTURE_REVIEW.md) ·
+[Draw.io diagrams](docs/invoice_sorter_architecture.drawio)
 
 ## Multi-agent IDE collaboration example
 
-This repository is also a practical example of using **three different agentic
-coding plug-ins in one Visual Studio Code workspace: GitHub Copilot, OpenAI
-Codex, and Claude Code. The tools do not share
+This repository is also a practical example of using **four different agentic
+coding tools in one Visual Studio Code workspace: GitHub Copilot, OpenAI
+Codex, Claude Code, and IBM Bob.** The tools do not share
 their context windows or token budgets automatically. Instead,
 [docs/HANDOFF.md](docs/HANDOFF.md) acts as the shared continuity document: each
 agent reads the current status, continues a bounded task, records changes and
@@ -33,11 +76,6 @@ on your machine.
 
 For the shortest setup and first dry run, see
 [docs/QUICK_START.md](docs/QUICK_START.md).
-
-For system design, architecture, data flow, and module responsibilities, see
-[ARCHITECTURE.md](ARCHITECTURE.md). The editable
-[Draw.io architecture diagrams](docs/invoice_sorter_architecture.drawio) contain
-separate static-structure and dynamic-flow pages.
 
 ## 1. What the tool does
 

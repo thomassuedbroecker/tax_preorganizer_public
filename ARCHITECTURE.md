@@ -1,5 +1,10 @@
 # Architecture
 
+> **Architecture Review:** A full seven-dimension architecture review (Business Alignment,
+> Security, Scalability, Patterns, Maintainability, Documentation, Twelve-Factor) was conducted
+> against this codebase and is saved in
+> [`docs/ARCHITECTURE_REVIEW.md`](docs/ARCHITECTURE_REVIEW.md).
+
 ## System Overview
 
 Invoice Sorter is a **local-first, desktop-and-CLI invoice organizer** that classifies PDF/image documents, extracts metadata, and routes them into category folders. The system has two primary interfaces: a command-line tool and a PySide6 desktop GUI, both backed by a unified orchestration engine.

@@ -11,8 +11,8 @@ def _read(relative_path: str) -> str:
     return (ROOT / relative_path).read_text(encoding="utf-8")
 
 
-def test_development_provenance_names_all_three_coding_tools():
-    tool_names = ("GitHub Copilot", "OpenAI Codex", "Claude Code")
+def test_development_provenance_names_all_coding_tools():
+    tool_names = ("GitHub Copilot", "OpenAI Codex", "Claude Code", "IBM Bob")
 
     for relative_path in ("README.md", "CONTENT_PROVENANCE.md"):
         content = _read(relative_path)
