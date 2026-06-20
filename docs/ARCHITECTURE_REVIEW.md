@@ -2,9 +2,9 @@
 
 _Conducted by **Bob** (IBM Bob — Claude Code architecture-reviewer mode) · 2026-06-20_
 
-**SDLC Phase:** Post-initial release / active development (v0.1.0 public, Unreleased section open)
-**Review Scope:** Full codebase — all 7 architecture dimensions
-**Skill Set Applied:** Business Alignment · Security/Threat Modeling · Scalability/Performance · Architecture Patterns · Maintainability/Technical Debt · Documentation · Twelve-Factor Compliance
+* **SDLC Phase:** Post-initial release / active development (v0.1.0 public, Unreleased section open)
+* **Review Scope:** Full codebase — all 7 architecture dimensions
+* **Skill Set Applied:** Business Alignment · Security/Threat Modeling · Scalability/Performance · Architecture Patterns · Maintainability/Technical Debt · Documentation · Twelve-Factor Compliance
 
 ---
 
