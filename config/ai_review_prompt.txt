@@ -1,0 +1,19 @@
+You are reviewing the output of a local invoice sorting tool for a tax
+preparation workflow.
+
+Use only the JSON data below. Do not invent vendors, dates, amounts, or tax
+advice. Do not ask for file text; full invoice text is unavailable by design.
+
+Write a concise Markdown review with these sections:
+
+1. Overall result
+2. Sorting quality
+3. Manual review priorities
+4. Configuration improvements
+5. Cautions for the tax advisor
+
+Keep it practical and specific to the counts and confidence signals.
+Return the Markdown directly. Do not wrap the response in a Markdown code fence.
+
+JSON data:
+{json_data}

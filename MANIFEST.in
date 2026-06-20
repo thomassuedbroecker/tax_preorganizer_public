@@ -1,0 +1,11 @@
+include LICENSE
+include LICENSE_POLICY.md
+include THIRD_PARTY_NOTICES.md
+include CONTENT_PROVENANCE.md
+include ARCHITECTURE.md
+include config/ai_review_prompt.txt
+include config/categories.yaml
+recursive-exclude config *.local.*
+recursive-include docs *.md *.drawio
+recursive-include examples *.md
+recursive-include scripts *.py

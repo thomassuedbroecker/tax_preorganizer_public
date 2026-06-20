@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "invoice-sorter"
+version = "0.1.0"
+description = "Local-first invoice sorter for German/English tax preparation (CLI-first, privacy-preserving)."
+readme = "README.md"
+requires-python = "==3.12.*"
+license = "BSD-2-Clause"
+license-files = ["LICENSE", "LICENSE_POLICY.md", "THIRD_PARTY_NOTICES.md"]
+authors = [{ name = "Thomas Südbröcker" }]
+classifiers = [
+    "Programming Language :: Python :: 3.12",
+]
+
+# Core runtime deps are intentionally light. Text extraction backends are
+# optional extras so the CLI never crashes when a backend is missing.
+dependencies = [
+    "PyYAML>=6.0",
+    "python-dateutil>=2.9",
+    "rich>=13.0",
+]
+
+[project.optional-dependencies]
+# Intended primary backend (Docling-first). Heavy: pulls in torch + models.
+docling = ["docling>=2.20.0"]
+# Lightweight fallback backend so the prototype runs without Docling.
+light = ["pdfplumber>=0.11", "pypdf>=4.0", "pytesseract>=0.3.13", "Pillow>=10.0"]
+# Optional planned DOCX export dependency, desktop GUI, agent service, and tests.
+docx = ["python-docx>=1.1"]
+gui = ["PySide6>=6.6"]
+# Optional in-app LangGraph agent service (advice, chat, executive reports).
+agent = ["langgraph>=0.2", "langchain-core>=0.3", "pydantic>=2.0"]
+test = ["pytest>=8.0"]
+
+[project.scripts]
+invoice-sorter = "invoice_sorter.cli:main"
+
+[project.gui-scripts]
+invoice-sorter-gui = "invoice_sorter.gui:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

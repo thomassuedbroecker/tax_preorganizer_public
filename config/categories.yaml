@@ -1,0 +1,185 @@
+# Invoice sorter category configuration.
+#
+# Each category has:
+#   keywords: words that, found in the document text, score the category.
+#   vendors:  (optional) known vendor names; matching one also fills the
+#             "Vendor" field and scores the category more strongly.
+#
+# Categories are matched case-insensitively, with word boundaries (so "OBI"
+# does not match inside "Mobilfunk"). Add your own categories or keywords
+# freely — the folder name is derived automatically (umlauts are
+# transliterated, e.g. "Auto / Mobilität" -> "Auto_Mobilitaet").
+#
+# This file ships only a LEAN set of generic, publicly known vendors. Keep your
+# own private vendor names in a git-ignored "categories.local.yaml" (copy this
+# file) and pass it with --config. Avoid putting the same vendor under two
+# categories — that creates a tie and sends the file to manual review.
+
+settings:
+  # Below this confidence the file goes to the manual-review category.
+  confidence_threshold: 0.5
+  # Category used for anything uncertain. Must also exist under `categories`.
+  manual_review_category: "Unklar / Manuell prüfen"
+  # Default currency assumed only when a number is found but no symbol — kept
+  # null so we never invent a currency.
+  default_currency: null
+
+categories:
+  Haushalt:
+    keywords:
+      - Strom
+      - Gas
+      - Wasser
+      - Nebenkosten
+      - Haushalt
+      - Möbel
+      - Baumarkt
+      - Reparatur
+      - Wartung
+    vendors:
+      - Stadtwerke
+      - E.ON
+      - Vattenfall
+      - IKEA
+      - OBI
+      - Bauhaus
+
+  Internet:
+    keywords:
+      - Internet
+      - DSL
+      - Glasfaser
+      - Router
+      - Mobilfunk
+      - Telefon
+    vendors:
+      - Telekom
+      - Vodafone
+      - 1&1
+      - O2
+      - Congstar
+
+  Arbeit:
+    keywords:
+      - Business
+      - Weiterbildung
+      - Konferenz
+      - Workshop
+      - Fachbuch
+      - Büro
+      - Arbeitsmittel
+      - Notebook
+      - Monitor
+
+  Musik:
+    keywords:
+      - Drums
+      - Schlagzeug
+      - Musik
+      - Instrument
+      - Mikrofon
+      - Audio Interface
+      - Logic Pro
+      - Plugin
+      - Band
+      - Studio
+      - PA
+      - Becken
+      - Snare
+    vendors:
+      - Thomann
+      - Music Store
+
+  "Auto / Mobilität":
+    keywords:
+      - Tankstelle
+      - Benzin
+      - Diesel
+      - Werkstatt
+      - Inspektion
+      - KFZ
+      - Reifen
+      - Bahn
+      - Ticket
+      - Leasing
+    vendors:
+      - Aral
+      - Shell
+      - Deutsche Bahn
+      - ADAC
+
+  Versicherung:
+    keywords:
+      - Versicherung
+      - Beitrag
+      - Police
+      - Haftpflicht
+      - Hausrat
+      - Beitragsrechnung
+    vendors:
+      - Allianz
+      - HUK
+      - AXA
+      - DEVK
+
+  Gesundheit:
+    keywords:
+      - Arzt
+      - Apotheke
+      - Rezept
+      - Praxis
+      - Zahnarzt
+      - Brille
+      - Physiotherapie
+    vendors:
+      - Apotheke
+
+  "Software / Cloud Services":
+    keywords:
+      - Cloud
+      - Subscription
+      - SaaS
+      - API
+      - License
+      - Lizenz
+      - Abonnement
+    vendors:
+      - OpenAI
+      - Anthropic
+      - GitHub
+      - Microsoft
+      - Apple
+      - Google
+      - IBM Cloud
+      - Adobe
+      - Atlassian
+
+  "Bank / Finanzen":
+    keywords:
+      - Kontoführung
+      - Kontogebühr
+      - Depot
+      - Zinsen
+      - Kredit
+      - Gebühren
+    vendors:
+      - Sparkasse
+      - Volksbank
+      - ING
+      - DKB
+      - N26
+      - PayPal
+
+  Steuern:
+    keywords:
+      - Steuer
+      - Finanzamt
+      - Steuerberater
+      - Steuerbescheid
+      - Einkommensteuer
+
+  "Unklar / Manuell prüfen":
+    keywords: []
+
+  Sonstiges:
+    keywords: []
