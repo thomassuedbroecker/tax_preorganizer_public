@@ -1,6 +1,6 @@
 # Invoice Sorter
 
-[![Tests](https://github.com/thomassuedbroecker/german_tax_preorganizer/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/thomassuedbroecker/german_tax_preorganizer/actions/workflows/tests.yml)
+[![Tests](https://github.com/thomassuedbroecker/tax_preorganizer_public/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/thomassuedbroecker/tax_preorganizer_public/actions/workflows/tests.yml)
 [![License: BSD-2-Clause](https://img.shields.io/badge/License-BSD--2--Clause-blue.svg)](LICENSE)
 
 _Note: This project and its documentation were developed with AI assistance
@@ -387,7 +387,7 @@ third-party notices. The source manifest explicitly excludes private
 ## Project structure
 
 ```
-german_tax_preorganizer/
+tax_preorganizer_public/
   pyproject.toml                 # py3.12; extras: docling, light, gui, agent, docx, test
   config/
     categories.yaml              # generic, committed

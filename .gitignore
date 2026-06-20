@@ -241,3 +241,5 @@ config/ai_review_prompt.local.txt
 # Development prompts and session logs may contain private context. Keep local only.
 /prompts/
 .DS_Store
+# Draw.io writes ".$<name>.bkp" lock/backup files next to a diagram while editing.
+.$*.bkp

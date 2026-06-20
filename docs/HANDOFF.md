@@ -58,6 +58,44 @@ organizing invoices for a tax advisor. **Everything runs on-machine.**
 
 ## Live update log
 
+### 2026-06-20 public-release readiness pass (Claude Code / Opus session)
+
+Final pre-publication review of this repo as the public GitHub project
+`tax_preorganizer_public`. Goals: well organized, right-sized docs, all tests
+valid, clear licensing, code/docs in sync.
+
+- **Repo-name references fixed.** The README test badge and the "Project
+  structure" tree still pointed at the old `german_tax_preorganizer` slug; both
+  now point at `tax_preorganizer_public` (badge would otherwise have been broken
+  on the public repo). The HANDOFF "How to run" path was updated to match.
+- **CI consolidated.** Two workflows ran the same pytest suite on every push
+  (`ci.yml` = OS matrix only; `tests.yml` = license check + compileall, badged).
+  Merged into a single `tests.yml`: Ubuntu + macOS matrix, Python 3.12,
+  `pip install -e ".[test]"`, license-metadata check, `compileall`, then pytest
+  with `QT_QPA_PLATFORM=offscreen`. Pinned `actions/checkout@v4` and
+  `actions/setup-python@v5`. Deleted `ci.yml`. The README badge already targets
+  `tests.yml`, so it stays valid.
+- **Stray artifact removed.** Deleted the Draw.io editor backup
+  `docs/.$invoice_sorter_architecture.drawio.bkp` and replaced the one-off
+  `.gitignore` entry with a `.$*.bkp` glob so future Draw.io lock/backup files
+  are ignored generally.
+- **Licensing reconfirmed clear.** `LICENSE` (BSD-2-Clause) matches
+  `pyproject.toml` (`License-Expression: BSD-2-Clause`); `check_license_metadata.py`
+  passes with **14 direct dependencies/extras covered**. `LICENSE_POLICY.md`,
+  `THIRD_PARTY_NOTICES.md`, and `CONTENT_PROVENANCE.md` are present and linked.
+- **Code/docs sync reconfirmed.** `tests/test_documentation_sync.py` still guards
+  the per-use-case model defaults + env overrides, the five `/api/*` routes, the
+  three-tool provenance list, and the two Draw.io pages. Version is `0.1.0` in
+  both `__init__.py` and `pyproject.toml`.
+- **Verification (fresh `.venv`, Python 3.12.12, `.[light,gui,agent,test]`):**
+  license metadata OK, `compileall` OK, `pip check` clean, and
+  `pytest -q` → **74 passed**. Note: `docling` was intentionally not installed
+  (avoids multi-GB torch); no test imports it directly, so the suite is complete
+  without it.
+- **Remaining release caveat (unchanged):** no resolved lockfile/SBOM is
+  committed. Before distributing a bundled GUI, generate an SBOM for the exact
+  environment and review PySide6/Qt, Docling transitive deps, and model terms.
+
 ### 2026-06-20 development-tool provenance clarification
 
 - README and `CONTENT_PROVENANCE.md` now explicitly identify the three agentic
@@ -392,7 +430,7 @@ From a manual UI test, fixed:
 ## How to run
 
 ```bash
-# from german_tax_preorganizer/
+# from tax_preorganizer_public/
 .venv/bin/python -m pytest -q                      # tests
 .venv/bin/invoice-sorter --input ./tax_input_docs --output /tmp/out --dry-run
 .venv/bin/invoice-sorter-gui                       # desktop app

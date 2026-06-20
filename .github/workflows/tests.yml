@@ -15,16 +15,21 @@ concurrency:
 
 jobs:
   test:
-    name: Python 3.12
-    runs-on: ubuntu-latest
+    name: Python 3.12 (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        # Project is pinned to Python 3.12 (requires-python = "==3.12.*").
+        os: [ubuntu-latest, macos-latest]
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
           cache: pip
@@ -39,4 +44,6 @@ jobs:
         run: python -m compileall -q src scripts
 
       - name: Run tests
+        env:
+          QT_QPA_PLATFORM: offscreen
         run: python -m pytest -q
